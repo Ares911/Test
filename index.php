@@ -42,7 +42,7 @@ li.comments {
 }
 </style>
 <body>
-<form name="comment" action="comment.php" method="post">
+<form method="POST" id="formx" action="">
 <div class="data">
 	<div>
 	Name:
@@ -59,21 +59,14 @@ li.comments {
 	</div>
 	<button id="demo">Додати:</button>
 </div>
-
-	<div class="www">
-	</div>
+</form>
 	<ul id="list">
 	</ul>
-	
-
-  <script src="jquery-3.2.1.min.js"></script>
-
- 
-<script>
-
-//var com = [];
+<script type="text/javascript" src="jquery-3.2.1.min.js"></script>
+<script type="text/javascript" language="javascript">
+var com = [];
  $(document).ready(function() {
-/* 	function validate (commen){
+	function validate (commen){
 		if (commen.name.length < 3){
 		return true ;
 		};
@@ -81,21 +74,35 @@ li.comments {
 		return true;
 		};
 		return false;
-	}	 */ 
-	$("#demo").click(function() {
-		
+	}	
+	$("#demo").click(function(e) {
+		 e.preventDefault();
+		var commen = {
+		 name: $("#name").val(),
+		 mail: $("#mail").val(),
+		 comment: $("#comment").val()
+		};
+		if (validate (commen)){
+			alert('Некоректно заповнені поля');
+		}else{			
 		$.ajax({
-      type: 'POST',
+        type: 'POST',
         url: 'json.php',
 		dataType: 'json',
+		data: commen,
         success: function(data) {
 			var cList = $('ul#list');
-		      // cList.empty();
+		       cList.empty();
 			 for (var i = 0; i < data.length; i++) {
-          //  alert(data[i].name, data[i].comment); 
-				var li = $('<li/>')
+          //  console.log(data[i].name, data[i].comment); 
+				var li = $('<li/>') 
 				.addClass('ui-menu-item')
 				.appendTo(cList);
+				var bbb = $('<button/>')
+				.addClass('delete')
+				.text('delete')
+				.data('index', i)
+				.appendTo(li); 
 				var aaa = $('<div/>')
 				.addClass('ui-all')
 				.text(data[i].name)
@@ -108,76 +115,25 @@ li.comments {
 				.addClass('ui-a')
 				.text(data[i].comment)
 				.appendTo(li);
-           }
+			    aaa = $('<hr/>')
+				.addClass('ui')
+				.appendTo(li);
+             }
+			  $('#formx')[0].reset();
 		}
-	
+        });
+		}
 
-			
-			/* if (validate(commen)){alert('Некоректно заповнені поля')}
-			else{com.push(commen);} */
-		
-        
-		
-  });
-		 
-	
 	});
-	/*  function renderComment(comment, container){
-			var aaa = $('<div/>')
-				.addClass('ui-all')
-				.text(comment.name)
-				.appendTo(container);
-			aaa = $('<div/>')
-				.addClass('ui-al')
-				.text(comment.mail)
-				.appendTo(container);
-			aaa = $('<div/>')
-				.addClass('ui-a')
-				.text(comment.comment)
-				.appendTo(container);
-	}
 	
-	function drawList() {
-		var cList = $('ul#list');
-		cList.empty();
-		for (var i = 0; i < com.length; i++){
-			var li = $('<li/>')
-				.addClass('ui-menu-item')
-				.appendTo(cList);
-				renderComment(com[i], li);
-			var bbb = $('<button/>')
-				.addClass('delete')
-				.text('delete')
-				.data('index', i)
-				.appendTo(li);
-			var edit = $('<button/>')
-				.addClass('edit')
-				.text('edit')
-				.data('index', i)
-				.appendTo(li);
-		}	
-	} */
-	/* $("ul#list").on('click', '.edit', function() {
-		var i = $(this).data('index');
-		var edit = prompt('comment',com[i].c);		
-		if (edit !== null){		
-		if (edit.length < 1){alert('Некоректно заповнені поля')}
-			else{com[i].c = edit}	
-		}
-		
-		drawList();
-		
-		});
-	$("ul#list").on('click', '.delete', function() {
-		var i = $(this).data('index');
+$("ul#list").on('click', '.delete', function(){
+	var i = $(this).data('index');
 		com.splice(i, 1);
-		drawList();
-	});  */
- 
-}); 
+});
+    });
+
  
 </script> 
-</form>
 
 </body>
 

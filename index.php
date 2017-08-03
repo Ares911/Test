@@ -64,6 +64,7 @@ li.comments {
 	</ul>
 <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
 <script type="text/javascript" language="javascript">
+
 var com = [];
  $(document).ready(function() {
 	function validate (commen){
@@ -100,6 +101,7 @@ var com = [];
 				.appendTo(cList);
 				var bbb = $('<button/>')
 				.addClass('delete')
+				.attr('id', 'id')
 				.text('delete')
 				.data('index', i)
 				.appendTo(li); 
@@ -126,10 +128,22 @@ var com = [];
 
 	});
 	
-$("ul#list").on('click', '.delete', function(){
-	var i = $(this).data('index');
-		com.splice(i, 1);
-});
+$(document).on('click', '.delete', function(){  
+           var id=$(this).attr("id");  
+           if(confirm("Are you sure you want to delete this?"))  
+           {  
+                $.ajax({  
+                     url:"delete.php",  
+                     method:"POST",  
+                     data:{id:id},  
+                     dataType:"text",  
+                     success:function(data){  
+                          alert(data);  
+                       //   fetch_data();  
+                     }  
+                });  
+           }  
+      });  
     });
 
  

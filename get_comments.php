@@ -1,10 +1,13 @@
 <?php 
-  header("Content-Type: text/html; charset=UTF-8");
-  $count = $_POST['count'];
-  $mysqli = new Mysqli('localhost', 'root', '', 'db');
-  $mysqli->query("SET NAMES utf8");
+   $name = $_POST["name"];
+  $mail = $_POST["mail"];
+  $comment = $_POST["comment"];
+  $name = htmlspecialchars($name);
+  $comment = htmlspecialchars($comment);
+  $mail = htmlspecialchars($mail);
+  $mysqli = new mysqli("localhost", "root", "", "db");
   $r = array();
-  $result = $mysqli->query("SELECT * FROM comments WHERE id > $count");
+  $result = $mysqli->query("SELECT * FROM `comments`");
   while($row = $result->fetch_assoc()) {
    $r[] = $row;
   }

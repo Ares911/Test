@@ -1,6 +1,9 @@
 <?php
-  $id = $_POST["id"];
+   $id = $_POST["id"];
   $mysqli = new mysqli("localhost", "root", "", "db");
-  $mysqli->query("DELETE FROM `comments` WHERE id='$id'");
-  header("Location: ".$_SERVER["HTTP_REFERER"]);
+  if ($mysqli->query("DELETE FROM `comments` WHERE id ='$id'") === TRUE) {
+    echo "Запис видалено";
+} else {
+    echo "Error deleting record: " . $mysqli->error;
+}
 ?>
